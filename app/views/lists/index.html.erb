@@ -1,0 +1,94 @@
+ <%#a href="/">Your todo list</a>
+      |
+      <a href="/edit_user_profile">Edit profile</a>
+      |
+      <a href="/user_sign_out">Sign out</a%>
+
+    <h1>Your todo list</h1>
+
+<div>
+  <div>
+    <h2>Add a new todo</h2>
+
+    <form action="/insert_list" method="post">
+      <div>
+        <label for="status_box"> Describe the task: </label>
+        <input id="status_box" type="text" name="query_description">
+        <input id="status_box" type="hidden" name="query_status" value="next_up">
+      </div>
+
+      <button>
+        Add to Next Up
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<div class="next_up">
+  <h2>Next Up</h2>
+
+  <ul>
+  <% @current_user.list_stat_next_up.each do|indi_list| %>
+      <li>
+        <div><%= indi_list.task_description %></div>
+        <small>
+          Added <%= time_ago_in_words(indi_list.created_at) %> ago
+ 
+
+          <a href="/delete_list/<%= indi_list.id %>">Delete</a>
+
+          <form action="/modify_list/<%= indi_list.id %>" method="post">
+          <input type="hidden" name="query_status" value="in_progress">
+
+          <button>Move to In Progress</button>
+        </form>
+
+        </small>
+        </li>
+        <% end %>
+  </ul>  
+</div>
+
+<div class="In_progress">
+  <h2>In Progress</h2>
+
+  <ul>
+   <% @current_user.list_stat_in_progress.each do|indi_list| %>
+      <li>
+        <div><%= indi_list.task_description %></div>
+
+        <small>
+          Started <%= time_ago_in_words(indi_list.created_at) %> ago
+
+          <a href="/delete_list/<%= indi_list.id %>">Delete</a>
+
+          <form action="/modify_list/<%= indi_list.id %>" method="post">
+          <input type="hidden" name="query_status" value="done">
+          <button>Move to Done</button>
+        </form>
+
+        </small>
+        </li>
+        <% end %>
+  </ul>  
+</div>
+
+<div class="Done">
+  <h2>Done</h2>
+
+  <ul>
+  <% @current_user.list_stat_done.each do|indi_list| %>
+      <li>
+        <div><%= indi_list.task_description %></div>
+        <small>
+          Completed <%= time_ago_in_words(indi_list.created_at) %> ago
+ 
+
+          <a href="/delete_list/<%= indi_list.id %>">Delete</a>
+        </small>
+
+      </li>
+        <% end %>
+  </ul>  
+</div>
